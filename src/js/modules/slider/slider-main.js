@@ -3,8 +3,6 @@ import Slider from './slider';
 export default class MainSlider extends Slider {
     constructor(btns, nextmodule, prevmodule) {
         super(btns, nextmodule, prevmodule);
-        console.log(this.nextmodule);
-        console.log(this.prevmodule);
     }
     
     showSlides(n) {
@@ -41,7 +39,7 @@ export default class MainSlider extends Slider {
         this.showSlides(this.slideIndex += n);
     }
 
-    bindTriggers() {
+    bindTriggers(btn) {
         this.btns.forEach(item => {
             item.addEventListener('click', () => {
                 this.plusSlides(1);
@@ -53,40 +51,19 @@ export default class MainSlider extends Slider {
                 this.showSlides(this.slideIndex);
             });
         });
-        this.prevmodule.forEach(item => {
+        btn.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                this.plusSlides(-1);
+                if(btn === this.prevmodule) {
+                    this.plusSlides(-1);
+                } else if (btn === this.nextmodule) {
+                    this.plusSlides(1);
+                }
+                
             });
         });
-        
-        this.prevmodule.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                this.plusSlides(1);
-            });
-        });
-
-        /*
-        document.querySelectorAll('.prevmodule').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                this.plusSlides(-1);
-            });
-        });
-
-        document.querySelectorAll('.nextmodule').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                this.plusSlides(1);
-            });
-            
-        });
-        */
+     
     }
 
     render() {
@@ -96,7 +73,8 @@ export default class MainSlider extends Slider {
             } catch (e) {}
 
             this.showSlides(this.slideIndex);
-            this.bindTriggers();
+            this.bindTriggers(this.prevmodule);
+            this.bindTriggers(this.nextmodule);
         }
     }
 }
